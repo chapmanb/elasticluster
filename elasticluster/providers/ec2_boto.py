@@ -139,8 +139,6 @@ class BotoCloudProvider(AbstractCloudProvider):
         except Exception as e:
             log.error("connection to ec2 could not be "
                       "established: message=`%s`", str(e))
-            self._ec2_connection = None
-            self._vpc_connection = None
             raise
 
         self._ec2_connection, self._vpc_connection = (
