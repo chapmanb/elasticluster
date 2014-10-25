@@ -558,4 +558,3 @@ options are passed to `sftp` command line:
 
 ``-o StrictHostKeyChecking=yes``
     Enable check of the host key of the remote machine.
-

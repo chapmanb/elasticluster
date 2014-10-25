@@ -558,7 +558,9 @@ class ConfigReader(object):
             "cluster": Schema(
                 {"cloud": All(str, Length(min=1)),
                  "setup_provider": All(str, Length(min=1)),
-                 "login": All(str, Length(min=1))}, required=True, extra=True),
+                 "login": All(str, Length(min=1)),
+                 "ssh_hostkeys_from_console_output": Boolean(str)
+                     }, required=True, extra=True),
             "setup": Schema(
                 {"provider": All(str, Length(min=1)),
                     }, required=True, extra=True),

@@ -37,11 +37,6 @@ from elasticluster.exceptions import TimeoutError, NodeNotFound, \
     InstanceError, ClusterError
 from elasticluster.repository import MemRepository
 
-class IgnorePolicy(paramiko.MissingHostKeyPolicy):
-    def missing_host_key(self, client, hostname, key):
-        log.info('Ignoring unknown %s host key for %s: %s' %
-                 (key.get_name(), hostname, hexlify(key.get_fingerprint())))
-
 
 class Cluster(object):
     """This is the heart of elasticluster and handles all cluster relevant
@@ -81,7 +76,7 @@ class Cluster(object):
     :ivar nodes: dict [node_type] = [:py:class:`Node`] that represents all
                  nodes in this cluster
    """
-    startup_timeout = 60 * 10  #: timeout in seconds to start all nodes
+    startup_timeout = 60 * 15  #: timeout in seconds to start all nodes
 
     def __init__(self, name, cloud_provider, setup_provider,
                  user_key_name, user_key_public,
@@ -110,6 +105,9 @@ class Cluster(object):
 
         self._user_key_public = os.path.expanduser(self._user_key_public)
         self._user_key_public = os.path.expandvars(self._user_key_public)
+
+        self.ssh_hostkeys_from_console_output = extra.get(
+            'ssh_hostkeys_from_console_output')
 
 
     def __getstate__(self):
@@ -412,6 +410,10 @@ class Cluster(object):
         try:
             while pending_nodes:
                 for node in pending_nodes[:]:
+                    if self.ssh_hostkeys_from_console_output:
+                        self._get_ssh_key_from_console_output(
+                            keys, node.instance_id)
+
                     ssh = node.connect(keyfile=self.known_hosts_file)
                     if ssh:
                         log.info("Connection to node %s (%s) successful.",
@@ -639,6 +641,24 @@ class Cluster(object):
                 log.warning("Ignoring error updating information on node %s: %s",
                           node, str(ex))
         self.repository.save_or_update(self)
+
+    def _get_ssh_key_from_console_output(known_hosts, instance_id, names):
+        console_output = self._cloud_provider.get_console_output(instance_id)
+        hostkeys = re.sub(
+            r'^.*-+BEGIN SSH HOST KEY KEYS-+\s*(.*)[\r\n]-+END SSH HOST KEY KEYS-+.*',
+            r'\1', console_output, flags=re.DOTALL).strip().split('\r\n')
+
+        print 'Adding for %s:' % names
+        print hostkeys
+        for key in hostkeys:
+            for name in node_names:
+                hashed_name = known_hosts.hash_host(name)
+
+                type, value, name = key.split()
+                entry = paramiko.hostkeys.HostKeyEntry.from_line(
+                    '{} {} {}'.format(hashed_name, type, value))
+
+                known_hosts.add(hashed_host, type, entry.key)
 
 
 class Node(object):
