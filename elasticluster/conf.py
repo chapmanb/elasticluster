@@ -396,6 +396,7 @@ class ConfigValidator(object):
                               Optional("root_volume_size"): All(str, Length(min=1)),
                               Optional("root_volume_type"): All(str, Length(min=1)),
                               Optional("root_volume_iops"): All(str, Length(min=1)),
+                              Optional("ssh_hostkeys_from_console_output"): Boolean(str),
                           },
                   "setup": {"provider": All(str, Length(min=1)),
                             Optional("playbook_path"): check_file(),

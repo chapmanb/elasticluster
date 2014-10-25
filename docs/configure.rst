@@ -616,6 +616,13 @@ Optional configuration keys
 
     Specific IOPS target for provisioned IOPS SSD (`io1`) volumes.
 
+``ssh_hostkeys_from_console_output``
+
+    whether to retrieve SSH host keys from instances' console output,
+    instead of accepting the host keys without verification when connecting
+    via SSH for the first time. Only supported when the cloud provider is
+    `ec2_boto`
+
 Examples
 --------
 
