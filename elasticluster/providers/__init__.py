@@ -88,15 +88,6 @@ class AbstractCloudProvider:
         """
         pass
 
-    def get_console_output(self, instance_id):
-        """Returns an instance's console output.
-
-        :param str instance_id: instance identifier
-
-        :return: str - instance console output
-        """
-        pass
-
 
 class AbstractSetupProvider:
     """
