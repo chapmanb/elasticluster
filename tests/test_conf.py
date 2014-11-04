@@ -89,6 +89,18 @@ def minimal_configuration(valid_path):
     cfg.set('cluster/boto_vpc', 'security_group', 'default')
     cfg.set('cluster/boto_vpc', 'network_ids', 'subnet-deadbeef')
 
+
+    cfg.add_section('cluster/os-hobbes')
+    cfg.set('cluster/os-hobbes', 'cloud', 'hobbes')
+    cfg.set('cluster/os-hobbes', 'login', 'log1')
+    cfg.set('cluster/os-hobbes', 'setup_provider', 'sp1')
+    cfg.set('cluster/os-hobbes', 'login', 'log1')
+    cfg.set('cluster/os-hobbes', 'image_id', 'i-12345')
+    cfg.set('cluster/os-hobbes', 'flavor', 'm1.tiny')
+    cfg.set('cluster/os-hobbes', 'misc_nodes', '10')
+    cfg.set('cluster/os-hobbes', 'security_group', 'default')
+
+
     cfg.add_section('cluster/c2')
     cfg.set('cluster/c2', 'cloud', 'google1')
     cfg.set('cluster/c2', 'login', 'log1')
