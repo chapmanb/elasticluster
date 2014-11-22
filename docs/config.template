@@ -472,6 +472,8 @@ worker_groups=ipython_engine
 #          configured anyway, otherwise creation of the cluster will
 #          fail.
 #
+# placement_group: Placement group to enable low-latency networking between compute nodes.
+#
 # root_volume_size: Size of the root volume, in gigabytes (GiB). The /home
 #                   directory of this volume on the first frontend node is
 #                   shared to compute nodes using NFS. Defaults to the

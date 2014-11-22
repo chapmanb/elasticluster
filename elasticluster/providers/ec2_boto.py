@@ -154,7 +154,8 @@ class BotoCloudProvider(AbstractCloudProvider):
                        security_group, flavor, image_id, image_userdata,
                        username=None, node_name=None, network_ids=None,
                        root_volume_size=None, root_volume_type=None,
-                       root_volume_iops=None, **kwargs):
+                       root_volume_iops=None, placement_group=None,
+                       **kwargs):
         """Starts a new instance on the cloud using the given properties.
         The following tasks are done to start an instance:
 
@@ -177,6 +178,7 @@ class BotoCloudProvider(AbstractCloudProvider):
         :param str root_volume_size: Target size, in GiB, for the root volume
         :param str root_volume_type: Type of root volume (standard, gp2, io1)
         :param str root_volume_iops: Provisioned IOPS for the root volume
+        :param str placement_group: Enable low-latency networking between compute nodes.
 
         :return: str - instance id of the started instance
         """
@@ -228,7 +230,7 @@ class BotoCloudProvider(AbstractCloudProvider):
                 instance_type=flavor, user_data=image_userdata,
                 network_interfaces=interfaces,
                 instance_profile_name=self._instance_profile,
-                block_device_map=bdm)
+                block_device_map=bdm, placement_group=placement_group)
         except Exception, ex:
             log.error("Error starting instance: %s", ex)
             if "TooManyInstances" in ex:

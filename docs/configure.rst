@@ -587,6 +587,12 @@ Optional configuration keys
     The maximum number of process to be created when virtual machines
     are started. Default is 10.
 
+``placement_group``
+
+    `Placement group
+    <http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-groups.html>`_
+    to enable low-latency networking between compute nodes.
+
 ``root_volume_size``
 
     Size of the root volume, in gigabytes (GiB). The /home directory of this
