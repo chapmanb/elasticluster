@@ -593,6 +593,13 @@ Optional configuration keys
     <http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-groups.html>`_
     to enable low-latency networking between compute nodes.
 
+``root_volume_name``
+
+    Device name of the root file system in the `block device mapping
+    <http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/block-device-mapping-concepts.html>`_.
+    Defaults to ``/dev/sda1``. ``/dev/xvda`` is another common choice on
+    HVM AMIs.
+
 ``root_volume_size``
 
     Size of the root volume, in gigabytes (GiB). The /home directory of this
