@@ -593,7 +593,7 @@ Optional configuration keys
     <http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-groups.html>`_
     to enable low-latency networking between compute nodes.
 
-``root_volume_name``
+``root_volume_device``
 
     Device name of the root file system in the `block device mapping
     <http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/block-device-mapping-concepts.html>`_.

@@ -475,9 +475,9 @@ worker_groups=ipython_engine
 # placement_group: Placement group to enable low-latency networking
 #                  between compute nodes.
 #
-# root_volume_name: Device name of the root file system. Defaults to
-#                   `/dev/sda1`. `/dev/xvda1` is another common choice
-#                   on HVM AMIs.
+# root_volume_device: Device name of the root file system. Defaults to
+#                     `/dev/sda1`. `/dev/xvda1` is another common choice
+#                     on HVM AMIs.
 #
 # root_volume_size: Size of the root volume, in gigabytes (GiB). The /home
 #                   directory of this volume on the first frontend node is

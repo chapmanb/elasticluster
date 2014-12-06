@@ -392,7 +392,7 @@ class ConfigValidator(object):
                               "setup_provider": All(str, Length(min=1)),
                               "login": All(str, Length(min=1)),
                               Optional("placement_group"): All(str, Length(min=1)),
-                              Optional("root_volume_name"): All(str, Length(min=1)),
+                              Optional("root_volume_device"): All(str, Length(min=1)),
                               Optional("root_volume_size"): All(str, Length(min=1)),
                               Optional("root_volume_type"): All(str, Length(min=1)),
                               Optional("root_volume_iops"): All(str, Length(min=1)),

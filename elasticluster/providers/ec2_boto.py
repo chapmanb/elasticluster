@@ -153,7 +153,7 @@ class BotoCloudProvider(AbstractCloudProvider):
     def start_instance(self, key_name, public_key_path, private_key_path,
                        security_group, flavor, image_id, image_userdata,
                        username=None, node_name=None, network_ids=None,
-                       root_volume_name=None, root_volume_size=None,
+                       root_volume_device=None, root_volume_size=None,
                        root_volume_type=None, root_volume_iops=None,
                        placement_group=None, **kwargs):
         """Starts a new instance on the cloud using the given properties.
@@ -175,7 +175,7 @@ class BotoCloudProvider(AbstractCloudProvider):
         :param str image_id: image type (os) to use for the instance
         :param str image_userdata: command to execute after startup
         :param str username: username for the given ssh key, default None
-        :param str root_volume_name: Root volume device name if not /dev/sda1 (/dev/xvda is common)
+        :param str root_volume_device: Root volume device name if not /dev/sda1
         :param str root_volume_size: Target size, in GiB, for the root volume
         :param str root_volume_type: Type of root volume (standard, gp2, io1)
         :param str root_volume_iops: Provisioned IOPS for the root volume
@@ -221,7 +221,7 @@ class BotoCloudProvider(AbstractCloudProvider):
             if root_volume_iops:
                 dev_root.iops = int(root_volume_iops)
             bdm = ec2.blockdevicemapping.BlockDeviceMapping()
-            dev_name = root_volume_name if root_volume_name else "/dev/sda1"
+            dev_name = root_volume_device if root_volume_device else "/dev/sda1"
             bdm[dev_name] = dev_root
         else:
             bdm = None
