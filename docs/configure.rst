@@ -616,6 +616,12 @@ Optional configuration keys
 
     Specific IOPS target for provisioned IOPS SSD (`io1`) volumes.
 
+``encrypted_volume_size``, ``encrypted_volume_device``, ``encrypted_volume_type``, ``encrypted_volume_iops``
+
+    Attach an encrypted EBS volume to the AWS cluster, shared over NFS
+    to worker nodes. Options are the same as those for ``root_volume``,
+    device defaults to ``/dev/xvdf``.
+
 ``ssh_hostkeys_from_console_output``
 
     whether to retrieve SSH host keys from instances' console output,

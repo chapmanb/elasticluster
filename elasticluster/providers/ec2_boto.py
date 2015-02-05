@@ -157,6 +157,8 @@ class BotoCloudProvider(AbstractCloudProvider):
                        username=None, node_name=None, network_ids=None,
                        root_volume_device=None, root_volume_size=None,
                        root_volume_type=None, root_volume_iops=None,
+                       encrypted_volume_device=None, encrypted_volume_size=None,
+                       encrypted_volume_type=None, encrypted_volume_iops=None,
                        placement_group=None, **kwargs):
         """Starts a new instance on the cloud using the given properties.
         The following tasks are done to start an instance:
@@ -181,6 +183,10 @@ class BotoCloudProvider(AbstractCloudProvider):
         :param str root_volume_size: Target size, in GiB, for the root volume
         :param str root_volume_type: Type of root volume (standard, gp2, io1)
         :param str root_volume_iops: Provisioned IOPS for the root volume
+        :param str encrypted_volume_device: Encrypted volume device name if not /dev/xvdf
+        :param str encrypted_volume_size: Target size, in GiB, for the encrypted volume
+        :param str encrypted_volume_type: Type of encrypted volume (standard, gp2, io1)
+        :param str encrypted_volume_iops: Provisioned IOPS for the encrypted volume
         :param str placement_group: Enable low-latency networking between compute nodes.
 
         :return: str - instance id of the started instance
@@ -214,7 +220,9 @@ class BotoCloudProvider(AbstractCloudProvider):
             interfaces = None
             security_groups = [security_group]
 
+        bdm = None
         if root_volume_size:
+            bdm = ec2.blockdevicemapping.BlockDeviceMapping()
             dev_root = ec2.blockdevicemapping.BlockDeviceType()
             dev_root.size = int(root_volume_size)
             dev_root.delete_on_termination = True
@@ -222,11 +230,21 @@ class BotoCloudProvider(AbstractCloudProvider):
                 dev_root.volume_type = root_volume_type
             if root_volume_iops:
                 dev_root.iops = int(root_volume_iops)
-            bdm = ec2.blockdevicemapping.BlockDeviceMapping()
             dev_name = root_volume_device if root_volume_device else "/dev/sda1"
             bdm[dev_name] = dev_root
-        else:
-            bdm = None
+        if encrypted_volume_size:
+            if bdm is None:
+                bdm = ec2.blockdevicemapping.BlockDeviceMapping()
+            dev_en = ec2.blockdevicemapping.BlockDeviceType()
+            dev_en.size = int(encrypted_volume_size)
+            dev_en.delete_on_termination = True
+            dev_en.encrypted = True
+            if encrypted_volume_type:
+                dev_en.volume_type = encrypted_volume_type
+            if encrypted_volume_iops:
+                dev_en.iops = int(encrypted_volume_iops)
+            en_dev_name = encrypted_volume_device if encrypted_volume_device else "/dev/xvdf"
+            bdm[en_dev_name] = dev_en
 
         try:
             reservation = connection.run_instances(
