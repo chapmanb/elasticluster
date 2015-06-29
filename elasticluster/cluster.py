@@ -37,6 +37,7 @@ from elasticluster.exceptions import TimeoutError, NodeNotFound, \
     InstanceError, ClusterError
 from elasticluster.repository import MemRepository
 
+SSH_PORT = 22
 
 class Cluster(object):
     """This is the heart of elasticluster and handles all cluster relevant
@@ -809,11 +810,21 @@ class Node(object):
             try:
                 log.debug("Trying to connect to host %s (%s)",
                           self.name, ip)
-                ssh.connect(ip,
+                # handle case of explicit port
+                addr, _, port = ip.partition(':')
+                # if port not specified, will default to SSH_PORT (22)
+                if port:
+                    port = int(port)
+                else:
+                    addr = ip
+                    port = SSH_PORT
+
+                ssh.connect(addr,
                             username=self.image_user,
                             allow_agent=True,
                             key_filename=self.user_key_private,
-                            timeout=Node.connection_timeout)
+                            timeout=Node.connection_timeout,
+                            port=port)
                 log.debug("Connection to %s succeded!", ip)
                 if ip != self.preferred_ip:
                     log.debug("Setting `preferred_ip` to %s", ip)
