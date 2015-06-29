@@ -16,13 +16,13 @@ that is https://github.com/alexandrucoman/vagrant-environment. This document des
 support, but the same concepts (and troubleshooting tips) apply.
 
 Note about pip (6/19/15): There is a bug in the Ubuntu version of pip at this time. (see
-https://bugs.launchpad.net/ubuntu/+source/python-pip/+bug/1306991) If you encounter this bug, the command ``pip install --pre azure-elasticluster`` will fail.
+https://bugs.launchpad.net/ubuntu/+source/python-pip/+bug/1306991) If you encounter this bug, the command ``pip install --pre elasticluster`` will fail.
 At that point, if you try to run the ``pip`` command by itself, that will also fail. The solution is as follows:
 ::
 
 	sudo easy_install -U pip	# this will uninstall and reinstall pip, without the problem
-	sudo pip uninstall elasticluster	# note, that's NOT azure-elasticluster, just elasticluster
-	sudo pip install --pre azure-elasticluster
+	sudo pip uninstall elasticluster
+	sudo pip install --pre --no-use-wheel elasticluster
 
 
 Notes about this version: The basis for this code is elasticluster 1.3.dev0 (which is known to be compatible with bcbio_vm at this time).
@@ -48,6 +48,8 @@ In this guide, we'll walk through all the steps to:
 		libssl-dev libffi-dev nodejs-legacy
 	sudo apt-get install npm -y
 	sudo apt-get install libxml2-dev libxslt1-dev
+    sudo pip install --upgrade httplib2
+    sudo pip install --upgrade stevedore
 	# these two steps are only needed if you want to run in a virtual Python environment:
 	sudo apt-get install python-virtualenv
 	sudo pip install virtualenvwrapper
@@ -78,9 +80,9 @@ do NOT specify ``sudo`` in the following command. If not in a virtual environmen
 
 ::
 
-	sudo pip install --pre azure-elasticluster
+	sudo pip install --pre --no-use-wheel elasticluster
 
-The Microsoft Azure SDK for Python will be automatically installed by the azure-elasticluster package. For more 
+The Microsoft Azure SDK for Python will be automatically installed by the elasticluster package. For more 
 information see: https://github.com/Azure/azure-sdk-for-python/
 
 4. Confirm elasticluster is ready to run:
