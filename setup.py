@@ -53,7 +53,8 @@ required_packages = [
     'PyCLI',
     'pycrypto',
     'paramiko',
-    'ansible',
+    'ansible==1.7.2',
+    'azure',
     'voluptuous',
     'configobj',
     # EC2 clouds
