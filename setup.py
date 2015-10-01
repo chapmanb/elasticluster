@@ -53,7 +53,7 @@ required_packages = [
     'PyCLI',
     'pycrypto',
     'paramiko',
-    'ansible==1.7.2',
+    'ansible>=1.9.0',
     'azure',
     'voluptuous',
     'configobj',
