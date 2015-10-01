@@ -32,4 +32,7 @@ from elasticluster.providers.ansible_provider import AnsibleSetupProvider
 from elasticluster.providers.ec2_boto import BotoCloudProvider
 from elasticluster.providers.openstack import OpenStackCloudProvider
 from elasticluster.providers.gce import GoogleCloudProvider
-from elasticluster.providers.azure_provider import AzureCloudProvider
+try:
+    from elasticluster.providers.azure_provider import AzureCloudProvider
+except ImportError:
+    AzureCloudProvider = None
